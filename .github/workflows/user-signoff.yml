@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: |
-          echo A comment on PR $NUMBER, redux3
+          echo A comment on PR $NUMBER, redux4
       - uses: actions/github-script@v6
         with:
           script: console.log(context)
