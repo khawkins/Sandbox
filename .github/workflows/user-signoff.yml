@@ -1,0 +1,15 @@
+name: user-signoff
+run-name: Installs project and runs linting
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+  issue_comment:
+  pull_request_review_comment:
+jobs:
+  user-signoff:
+    runs-on: ubuntu-latest
+    name: User signing off PR
+    steps:
+      - uses: actions/github-script@v6
+        with:
+          script: console.log(context)
