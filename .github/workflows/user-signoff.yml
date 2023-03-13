@@ -1,11 +1,32 @@
 name: user-signoff
-run-name: Accepts user comments on PRs
-on: issue_comment
+run-name: Allows a user to sign off a PR check with a comment
+on:
+  pull_request:
+    types: [opened, edited]
+  issue_comment:
+    types: [created]
 jobs:
-  user-signoff:
+  create_check:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
+    steps:
+      - name: Create sign-off check
+        id: create_check
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const newCheck = await github.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'User Sign-Off Check',
+              head_sha: context.payload.pull_request.head.sha,
+              status: 'queued',
+            });
+            console.log(newCheck.data);
+  user_signoff:
     runs-on: ubuntu-latest
     name: User signing off PR
-    if: ${{ github.event.issue.pull_request }}
+    if: ${{ github.event_name == 'issue_comment' && github.event.issue.pull_request }}
     steps:
       - uses: actions/checkout@v3
       - run: |
