@@ -8,8 +8,8 @@ jobs:
     if: ${{ github.event.issue.pull_request }}
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/github-script@v6
       - run: |
-          echo A comment on PR $NUMBER, redux2
+          echo A comment on PR $NUMBER, redux3
+      - uses: actions/github-script@v6
         with:
           script: console.log(context)
