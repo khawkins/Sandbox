@@ -9,7 +9,7 @@ jobs:
     if: ${{ github.event.issue.pull_request }}
     steps:
       - run: |
-          echo A comment on PR $NUMBER
+          echo A comment on PR $NUMBER, redux
       - uses: actions/github-script@v6
         with:
           script: console.log(context)
