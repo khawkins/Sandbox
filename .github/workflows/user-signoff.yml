@@ -1,7 +1,6 @@
 name: user-signoff
 run-name: Accepts user comments on PRs
-on:
-  issue_comment:
+on: issue_comment
 jobs:
   user-signoff:
     runs-on: ubuntu-latest
@@ -9,7 +8,7 @@ jobs:
     if: ${{ github.event.issue.pull_request }}
     steps:
       - run: |
-          echo A comment on PR $NUMBER
+          echo A comment on PR $NUMBER, redux
       - uses: actions/github-script@v6
         with:
           script: console.log(context)
