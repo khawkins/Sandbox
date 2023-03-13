@@ -1,7 +1,6 @@
 name: user-signoff
 run-name: Accepts user comments on PRs
-on:
-  issue_comment:
+on: issue_comment
 jobs:
   user-signoff:
     runs-on: ubuntu-latest
