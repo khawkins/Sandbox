@@ -14,7 +14,8 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
-            console.log(github.rest.checks);
+            const ghChecks = await github.rest.checks;
+            console.log(ghChecks);
   create_check:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
@@ -39,7 +40,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: |
-          echo A comment on PR $NUMBER, redux6
+          echo A comment on PR $NUMBER, redux7
       - uses: actions/github-script@v6
         with:
           script: console.log(context)
