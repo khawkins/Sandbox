@@ -44,7 +44,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: context.payload.pull_request.head.sha,
-              check_name: 'User Sign-Off Check',
+              //check_name: 'User Sign-Off Check',
             });
             console.log('signoffCheck:');
             console.log(signoffCheck);
