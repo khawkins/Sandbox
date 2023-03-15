@@ -30,7 +30,8 @@ jobs:
               repo: context.repo.repo,
               name: 'User Sign-Off Check',
               head_sha: context.payload.pull_request.head.sha,
-              status: 'queued',
+              status: 'completed',
+              conclusion: 'success',
             });
             console.log(newCheck.data);
   user_signoff:
@@ -40,7 +41,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: |
-          echo A comment on PR $NUMBER, redux7
+          echo A comment on PR $NUMBER, redux8
       - uses: actions/github-script@v6
         with:
           script: console.log(context)
