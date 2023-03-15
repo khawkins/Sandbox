@@ -3,19 +3,19 @@ run-name: Allows a user to sign off a PR check with a comment
 on:
   pull_request:
     types: [opened, edited]
-  issue_comment:
-    types: [created]
+  #issue_comment:
+  #  types: [created]
 jobs:
-  list_props:
-    runs-on: ubuntu-latest
-    name: List props of github object
-    if: ${{ github.event_name == 'pull_request' }}
-    steps:
-      - uses: actions/github-script@v6
-        with:
-          script: |
-            const ghChecks = await github.rest.checks;
-            console.log(ghChecks);
+  #list_props:
+  #  runs-on: ubuntu-latest
+  #  name: List props of github object
+  #  if: ${{ github.event_name == 'pull_request' }}
+  #  steps:
+  #    - uses: actions/github-script@v6
+  #      with:
+  #        script: |
+  #          const ghChecks = await github.rest.checks;
+  #          console.log(ghChecks);
   create_check:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
@@ -32,15 +32,14 @@ jobs:
               head_sha: context.payload.pull_request.head.sha,
               status: 'queued',
             });
-            console.log(newCheck.data);
-  user_signoff:
-    runs-on: ubuntu-latest
-    name: User signing off PR
-    if: ${{ github.event_name == 'issue_comment' && github.event.issue.pull_request }}
-    steps:
-      - uses: actions/checkout@v3
-      - run: |
-          echo A comment on PR $NUMBER, redux7
-      - uses: actions/github-script@v6
-        with:
-          script: console.log(context)
+  #user_signoff:
+  #  runs-on: ubuntu-latest
+  #  name: User signing off PR
+  #  if: ${{ github.event_name == 'issue_comment' && github.event.issue.pull_request }}
+  #  steps:
+  #    - uses: actions/checkout@v3
+  #    - run: |
+  #        echo A comment on PR $NUMBER, redux7
+  #    - uses: actions/github-script@v6
+  #      with:
+  #        script: console.log(context)
