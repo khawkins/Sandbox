@@ -16,22 +16,36 @@ jobs:
   #        script: |
   #          const ghChecks = await github.rest.checks;
   #          console.log(ghChecks);
-  create_check:
+  #create_check:
+  #  runs-on: ubuntu-latest
+  #  if: ${{ github.event_name == 'pull_request' }}
+  #  steps:
+  #    - name: Create sign-off check
+  #      id: create_check
+  #      uses: actions/github-script@v6
+  #      with:
+  #        script: |
+  #          const newCheck = await github.rest.checks.create({
+  #            owner: context.repo.owner,
+  #            repo: context.repo.repo,
+  #            name: 'User Sign-Off Check',
+  #            head_sha: context.payload.pull_request.head.sha,
+  #            status: 'queued',
+  #          });
+  list-checks:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'pull_request' }}
     steps:
-      - name: Create sign-off check
-        id: create_check
+      - name: List checks on PR
         uses: actions/github-script@v6
         with:
           script: |
-            const newCheck = await github.rest.checks.create({
+            const prChecks = await github.rest.checks.listForRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              name: 'User Sign-Off Check',
-              head_sha: context.payload.pull_request.head.sha,
-              status: 'queued',
+              ref: context.payload.pull_request.head.sha,
             });
+            console.log('prChecks:');
+            console.log(prChecks);
   #user_signoff:
   #  runs-on: ubuntu-latest
   #  name: User signing off PR
