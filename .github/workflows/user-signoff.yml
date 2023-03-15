@@ -48,7 +48,8 @@ jobs:
             });
             console.log('signoffCheck:');
             console.log(signoffCheck);
-            console.log('signoffCheck check_runs[0]: ' + signoffCheck.data.check_runs[0]);
+            console.log('signoffCheck id: ' + signoffCheck.data.check_runs[0].id);
+            console.log('signoffCheck name: ' + signoffCheck.data.check_runs[0].name);
   #user_signoff:
   #  runs-on: ubuntu-latest
   #  name: User signing off PR
