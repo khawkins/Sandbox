@@ -2,7 +2,7 @@ name: user-signoff
 run-name: Allows a user to sign off a PR check with a comment
 on:
   pull_request:
-    types: [opened, edited]
+    types: [opened, synchronize]
   #issue_comment:
   #  types: [created]
 jobs:
@@ -39,13 +39,15 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const prChecks = await github.rest.checks.listForRef({
+            const signoffCheck = await github.rest.checks.listForRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: context.payload.pull_request.head.sha,
+              check_name: 'User Sign-Off Check',
             });
-            console.log('prChecks:');
-            console.log(prChecks);
+            console.log('signoffCheck:');
+            console.log(signoffCheck);
+            console.log('signoffCheck id: ' + signoffCheck.id);
   #user_signoff:
   #  runs-on: ubuntu-latest
   #  name: User signing off PR
