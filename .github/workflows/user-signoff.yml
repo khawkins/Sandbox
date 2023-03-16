@@ -58,9 +58,18 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            console.log('Take 1');
+            console.log('Take 2');
             if (context.actor == 'khawkins' && context.payload.comment.body == 'Ship it!') {
               console.log('Got the right message from the right user!');
+              const newCheck = await github.rest.checks.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'User Sign-Off Check',
+                head_sha: context.payload.pull_request.head.sha,
+                status: 'completed',
+                conclusion: 'success',
+              });
+              console.log('Created sign-off check: ' + newCheck);
             } else {
               console.log('Either user (' + context.actor + ') or comment (' + context.payload.comment.body + ') is incorrect!');
             }
