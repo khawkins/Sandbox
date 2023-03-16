@@ -58,8 +58,9 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            if ('${{ github.actor }}' == 'khawkins' && '${{ github.event.comment.body }}' == 'Ship it!') {
+            console.log('Take 1');
+            if (context.actor == 'khawkins' && context.payload.comment.body == 'Ship it!') {
               console.log('Got the right message from the right user!');
             } else {
-              console.log('Either user (${{ github.actor }}) or comment (${{ github.event.comment.body }}) is incorrect!');
+              console.log('Either user (' + context.actor + ') or comment (' + context.payload.comment.body + ') is incorrect!');
             }
