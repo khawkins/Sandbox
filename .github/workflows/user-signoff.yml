@@ -71,13 +71,24 @@ jobs:
               });
               const headSha = issuePr.data.head.sha;
               if (context.payload.action == "deleted") {
+                console.log('Sign-off comment deleted. Re-requesting check run.');
                 const checkRunsForPr = await github.rest.checks.listForRef({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   ref: headSha,
                   check_name: signOffCheckName,
                 });
-                return checkRunsForPr;
+                if (checkRunsForPr.data.total_count > 0) {
+                  console.log('Found ' + checkRunsForPr.data.total_count + ' check run(s) for "' + signOffCheckName + '".');
+                  const signOffCheckRunId = checkRunsForPr.data.check_runs[0].id;
+                  await github.rest.checks.rerequestRun({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    check_run_id: signOffCheckRunId,
+                  });
+                } else {
+                  console.log('No completed check runs found for "' + signOffCheckName + '". No action taken.');
+                }
               } else if (context.payload.action == "created") {
                 console.log('Got the right message from the right user!');
                 const newCheck = await github.rest.checks.create({
