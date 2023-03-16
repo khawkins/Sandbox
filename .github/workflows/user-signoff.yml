@@ -56,10 +56,11 @@ jobs:
     steps:
       - name: Sign off with the right user and message
         uses: actions/github-script@v6
+        id: print-payload
         with:
           script: |
             console.log('Take 4');
-            console.log('context.payload: ' + context.payload);
+            return context.payload;
             if (context.actor == 'khawkins' && context.payload.comment.body == 'Ship it!') {
               console.log('Got the right message from the right user!');
               //const newCheck = await github.rest.checks.create({
@@ -74,3 +75,5 @@ jobs:
             } else {
               console.log('Either user (' + context.actor + ') or comment (' + context.payload.comment.body + ') is incorrect!');
             }
+      - name: Get result
+        run: echo "${{steps.print-payload.outputs.result}}"
