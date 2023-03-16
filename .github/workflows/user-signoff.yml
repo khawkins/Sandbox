@@ -2,7 +2,7 @@ name: user-signoff
 run-name: Allows a user to sign off a PR check with a comment
 on:
   issue_comment:
-    types: [created]
+    types: [created, deleted]
   # pull_request:
   #   types: [opened, synchronize]
 jobs:
@@ -60,6 +60,7 @@ jobs:
         with:
           script: |
             console.log('Take 7');
+            return context.payload;
             if (context.actor == 'khawkins' && context.payload.comment.body == 'Ship it!') {
               console.log('Got the right message from the right user!');
               const issuePr = await github.rest.pulls.get({
