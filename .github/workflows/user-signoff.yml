@@ -50,14 +50,20 @@ jobs:
   #           //console.log('signoffCheck id: ' + signoffCheck.data.check_runs[0].id);
   #           //console.log('signoffCheck name: ' + signoffCheck.data.check_runs[0].name);
   user_signoff:
-   runs-on: ubuntu-latest
-   name: User signing off PR
-   #if: ${{ github.event_name == 'issue_comment' && github.event.issue.pull_request }}
-   steps:
-     - name: User making a comment
-       uses: actions/github-script@v6
-       with:
-         script: |
-           console.log('Made it here take 2.');
-           console.log('context: ' + context);
-           console.log('context.github.actor: ' + context.github.actor);
+    runs-on: ubuntu-latest
+    name: User signing off PR
+    #if: ${{ github.event_name == 'issue_comment' && github.event.issue.pull_request }}
+    steps:
+      - name: Dump GitHub context
+        id: github_context_step
+        run: echo '${{ toJSON(github) }}'
+      - name: Dump job context
+        run: echo '${{ toJSON(job) }}'
+      - name: Dump steps context
+        run: echo '${{ toJSON(steps) }}'
+      - name: Dump runner context
+        run: echo '${{ toJSON(runner) }}'
+      - name: Dump strategy context
+        run: echo '${{ toJSON(strategy) }}'
+      - name: Dump matrix context
+        run: echo '${{ toJSON(matrix) }}'
