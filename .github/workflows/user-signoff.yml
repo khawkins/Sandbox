@@ -59,7 +59,7 @@ jobs:
         id: print-payload
         with:
           script: |
-            console.log('Take 12');
+            console.log('Take 13');
             const signOffCheckName = 'User Sign-Off Check';
             const signOffCommentText = 'Ship it!';
             if (context.actor == 'khawkins' && context.payload.comment.body == signOffCommentText) {
