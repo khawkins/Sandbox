@@ -60,9 +60,14 @@ jobs:
         with:
           script: |
             console.log('Take 5');
-            return context.payload;
             if (context.actor == 'khawkins' && context.payload.comment.body == 'Ship it!') {
               console.log('Got the right message from the right user!');
+              const issuePr = await github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.issue.number
+              });
+              return issuePr;
               //const newCheck = await github.rest.checks.create({
               //  owner: context.repo.owner,
               //  repo: context.repo.repo,
