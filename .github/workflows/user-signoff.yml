@@ -60,4 +60,4 @@ jobs:
          script: |
            console.log('Made it here take 3.');
            console.log('context: ' + context);
-           console.log('context.github.actor: ' + context.github.actor);
+           //console.log('context.github.actor: ' + context.github.actor);
