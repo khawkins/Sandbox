@@ -58,6 +58,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
+            console.log('Take 1');
             if ('${{ github.actor }}' == 'khawkins' && '${{ github.event.comment.body }}' == 'Ship it!') {
               console.log('Got the right message from the right user!');
             } else {
