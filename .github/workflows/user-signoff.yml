@@ -1,10 +1,10 @@
 name: user-signoff
 run-name: Allows a user to sign off a PR check with a comment
 on:
-  # pull_request:
-  #   types: [opened, synchronize]
   issue_comment:
     types: [created]
+  # pull_request:
+  #   types: [opened, synchronize]
 jobs:
   #list_props:
   #  runs-on: ubuntu-latest
@@ -54,7 +54,9 @@ jobs:
    name: User signing off PR
    #if: ${{ github.event_name == 'issue_comment' && github.event.issue.pull_request }}
    steps:
-     - uses: actions/github-script@v6
+     - name: User making a comment
+       uses: actions/github-script@v6
        with:
          script: |
-           console.log('Commenter: ' + context.github.actor);
+           console.log('Made it here.');
+           //console.log('Commenter: ' + context.github.actor);
