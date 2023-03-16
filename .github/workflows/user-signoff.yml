@@ -2,45 +2,61 @@ name: user-signoff
 run-name: Allows a user to sign off a PR check with a comment
 on:
   pull_request:
-    types: [opened, edited]
-  issue_comment:
-    types: [created]
+    types: [opened, synchronize]
+  #issue_comment:
+  #  types: [created]
 jobs:
-  list_props:
+  #list_props:
+  #  runs-on: ubuntu-latest
+  #  name: List props of github object
+  #  if: ${{ github.event_name == 'pull_request' }}
+  #  steps:
+  #    - uses: actions/github-script@v6
+  #      with:
+  #        script: |
+  #          const ghChecks = await github.rest.checks;
+  #          console.log(ghChecks);
+  #create_check:
+  #  runs-on: ubuntu-latest
+  #  if: ${{ github.event_name == 'pull_request' }}
+  #  steps:
+  #    - name: Create sign-off check
+  #      id: create_check
+  #      uses: actions/github-script@v6
+  #      with:
+  #        script: |
+  #          const newCheck = await github.rest.checks.create({
+  #            owner: context.repo.owner,
+  #            repo: context.repo.repo,
+  #            name: 'User Sign-Off Check',
+  #            head_sha: context.payload.pull_request.head.sha,
+  #            status: 'queued',
+  #          });
+  list-checks:
     runs-on: ubuntu-latest
-    name: List props of github object
-    if: ${{ github.event_name == 'pull_request' }}
     steps:
-      - uses: actions/github-script@v6
-        with:
-          script: |
-            const ghChecks = await github.rest.checks;
-            console.log(ghChecks);
-  create_check:
-    runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'pull_request' }}
-    steps:
-      - name: Create sign-off check
-        id: create_check
+      - name: List checks on PR
         uses: actions/github-script@v6
         with:
           script: |
-            const newCheck = await github.rest.checks.create({
+            const signoffCheck = await github.rest.repos.listCommitStatusesForRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              name: 'User Sign-Off Check',
-              head_sha: context.payload.pull_request.head.sha,
-              status: 'queued',
+              ref: context.payload.pull_request.head.sha,
+              //check_name: 'User Sign-Off Check',
             });
-            console.log(newCheck.data);
-  user_signoff:
-    runs-on: ubuntu-latest
-    name: User signing off PR
-    if: ${{ github.event_name == 'issue_comment' && github.event.issue.pull_request }}
-    steps:
-      - uses: actions/checkout@v3
-      - run: |
-          echo A comment on PR $NUMBER, redux7
-      - uses: actions/github-script@v6
-        with:
-          script: console.log(context)
+            console.log('signoffCheck:');
+            console.log(signoffCheck);
+            //console.log('signoffCheck id: ' + signoffCheck.data.check_runs[0].id);
+            //console.log('signoffCheck name: ' + signoffCheck.data.check_runs[0].name);
+  #user_signoff:
+  #  runs-on: ubuntu-latest
+  #  name: User signing off PR
+  #  if: ${{ github.event_name == 'issue_comment' && github.event.issue.pull_request }}
+  #  steps:
+  #    - uses: actions/checkout@v3
+  #    - run: |
+  #        echo A comment on PR $NUMBER, redux7
+  #    - uses: actions/github-script@v6
+  #      with:
+  #        script: console.log(context)
