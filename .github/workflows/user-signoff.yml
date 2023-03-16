@@ -58,6 +58,6 @@ jobs:
        uses: actions/github-script@v6
        with:
          script: |
-           console.log('Made it here take 2.');
+           console.log('Made it here take 3.');
            console.log('context: ' + context);
            console.log('context.github.actor: ' + context.github.actor);
