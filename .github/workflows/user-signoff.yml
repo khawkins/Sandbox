@@ -59,7 +59,7 @@ jobs:
         id: print-payload
         with:
           script: |
-            console.log('Take 10');
+            console.log('Take 11');
             const signOffCheckName = 'User Sign-Off Check';
             const signOffCommentText = 'Ship it!';
             if (context.actor == 'khawkins' && context.payload.comment.body == signOffCommentText) {
@@ -86,6 +86,7 @@ jobs:
                     repo: context.repo.repo,
                     check_run_id: signOffCheckRunId,
                     status: 'queued',
+                    conclusion: null,
                   });
                 } else {
                   console.log('No completed check runs found for "' + signOffCheckName + '". No action taken.');
