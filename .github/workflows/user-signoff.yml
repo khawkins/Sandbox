@@ -59,25 +59,39 @@ jobs:
         id: print-payload
         with:
           script: |
-            console.log('Take 7');
-            return context.payload;
-            if (context.actor == 'khawkins' && context.payload.comment.body == 'Ship it!') {
-              console.log('Got the right message from the right user!');
+            console.log('Take 8');
+            const signOffCheckName = 'User Sign-Off Check';
+            const signOffCommentText = 'Ship it!';
+            if (context.actor == 'khawkins' && context.payload.comment.body == signOffCommentText) {
+              // We're going to need the SHA information from the PR.
               const issuePr = await github.rest.pulls.get({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 pull_number: context.issue.number
               });
               const headSha = issuePr.data.head.sha;
-              const newCheck = await github.rest.checks.create({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                name: 'User Sign-Off Check',
-                head_sha: headSha,
-                status: 'completed',
-                conclusion: 'success',
-              });
-              console.log('Created sign-off check: ' + newCheck);
+              if (context.payload.action == "deleted") {
+                const checkRunsForPr = await github.rest.checks.listForRef({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: headSha,
+                  check_name: signOffCheckName,
+                });
+                return checkRunsForPr;
+              } else if (context.payload.action == "created") {
+                console.log('Got the right message from the right user!');
+                const newCheck = await github.rest.checks.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: signOffCheckName,
+                  head_sha: headSha,
+                  status: 'completed',
+                  conclusion: 'success',
+                });
+                console.log('Created sign-off check: ' + newCheck);
+              } else {
+                console.log('Unexpected value for issue_comment action: ' + context.payload.action);
+              }
             } else {
               console.log('Either user (' + context.actor + ') or comment (' + context.payload.comment.body + ') is incorrect!');
             }
