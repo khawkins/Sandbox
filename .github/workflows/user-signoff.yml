@@ -52,7 +52,7 @@ jobs:
   user_signoff:
    runs-on: ubuntu-latest
    name: User signing off PR
-   if: ${{ github.event_name == 'issue_comment' && github.event.issue.pull_request }}
+   #if: ${{ github.event_name == 'issue_comment' && github.event.issue.pull_request }}
    steps:
      - uses: actions/github-script@v6
        with:
