@@ -59,7 +59,7 @@ jobs:
         id: print-payload
         with:
           script: |
-            console.log('Take 5');
+            console.log('Take 6');
             if (context.actor == 'khawkins' && context.payload.comment.body == 'Ship it!') {
               console.log('Got the right message from the right user!');
               const issuePr = await github.rest.pulls.get({
