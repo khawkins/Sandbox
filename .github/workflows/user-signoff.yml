@@ -59,7 +59,7 @@ jobs:
         id: print-payload
         with:
           script: |
-            console.log('Take 12');
+            console.log('Take 13');
             const signOffCheckName = 'User Sign-Off Check';
             const signOffCommentText = 'Ship it!';
             if (context.actor == 'khawkins' && context.payload.comment.body == signOffCommentText) {
@@ -80,13 +80,20 @@ jobs:
                 });
                 if (checkRunsForPr.data.total_count > 0) {
                   console.log('Found ' + checkRunsForPr.data.total_count + ' check run(s) for "' + signOffCheckName + '".');
-                  const signOffCheckRunId = checkRunsForPr.data.check_runs[0].id;
-                  const reRequestResult = await github.rest.checks.rerequestRun({
+                  //const signOffCheckRunId = checkRunsForPr.data.check_runs[0].id;
+                  //const reRequestRunResult = await github.rest.checks.rerequestRun({
+                  //  owner: context.repo.owner,
+                  //  repo: context.repo.repo,
+                  //  check_run_id: signOffCheckRunId,
+                  //});
+                  //return reRequestRunResult;
+                  const signOffCheckSuiteId = checkRunsForPr.data.check_runs[0].check_suite.id;
+                  const reRequestSuiteResult = await github.rest.checks.rerequestSuite({
                     owner: context.repo.owner,
                     repo: context.repo.repo,
-                    check_run_id: signOffCheckRunId,
+                    check_suite_id: signOffCheckSuiteId,
                   });
-                  return reRequestResult;
+                  return reRequestSuiteResult;
                 } else {
                   console.log('No completed check runs found for "' + signOffCheckName + '". No action taken.');
                 }
