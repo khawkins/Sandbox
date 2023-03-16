@@ -58,7 +58,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            console.log('Take 2');
+            console.log('Take 3');
             if (context.actor == 'khawkins' && context.payload.comment.body == 'Ship it!') {
               console.log('Got the right message from the right user!');
               const newCheck = await github.rest.checks.create({
