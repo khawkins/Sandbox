@@ -58,5 +58,6 @@ jobs:
        uses: actions/github-script@v6
        with:
          script: |
-           console.log('Made it here.');
-           //console.log('Commenter: ' + context.github.actor);
+           console.log('Made it here take 2.');
+           console.log('context: ' + context);
+           console.log('context.github.actor: ' + context.github.actor);
