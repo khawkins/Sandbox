@@ -54,6 +54,8 @@ jobs:
     name: User signing off PR
     #if: ${{ github.event_name == 'issue_comment' && github.event.issue.pull_request }}
     steps:
+      - name: Dummy PR update comments
+        run: echo 'Hello take 1'
       - name: Dump GitHub context
         id: github_context_step
         run: echo '${{ toJSON(github) }}'
