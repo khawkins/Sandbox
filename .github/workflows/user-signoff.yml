@@ -59,7 +59,7 @@ jobs:
         id: print-payload
         with:
           script: |
-            console.log('Take 5');
+            console.log('Take 6');
             if (context.actor == 'khawkins' && context.payload.comment.body == 'Ship it!') {
               console.log('Got the right message from the right user!');
               const issuePr = await github.rest.pulls.get({
@@ -67,18 +67,19 @@ jobs:
                 repo: context.repo.repo,
                 pull_number: context.issue.number
               });
-              return issuePr;
-              //const newCheck = await github.rest.checks.create({
-              //  owner: context.repo.owner,
-              //  repo: context.repo.repo,
-              //  name: 'User Sign-Off Check',
-              //  head_sha: context.payload.pull_request.head.sha,
-              //  status: 'completed',
-              //  conclusion: 'success',
-              //});
+              const headSha = issuePr.data.head.sha;
+              const newCheck = await github.rest.checks.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'User Sign-Off Check',
+                head_sha: headSha,
+                status: 'completed',
+                conclusion: 'success',
+              });
               console.log('Created sign-off check: ' + newCheck);
             } else {
               console.log('Either user (' + context.actor + ') or comment (' + context.payload.comment.body + ') is incorrect!');
             }
+            return 0;
       - name: Get result
         run: echo "${{steps.print-payload.outputs.result}}"
