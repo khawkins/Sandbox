@@ -59,7 +59,7 @@ jobs:
         id: print-payload
         with:
           script: |
-            console.log('Take 14');
+            console.log('Take 15');
             const signOffCheckName = 'User Sign-Off Check';
             const signOffCommentText = 'Ship it!';
             if (context.actor == 'khawkins' && context.payload.comment.body == signOffCommentText) {
@@ -89,6 +89,10 @@ jobs:
                   head_sha: headSha,
                   status: 'completed',
                   conclusion: 'success',
+                  output: {
+                    title: 'Successful user signoff',
+                    summary: 'User sign-off completed by ' + context.actor + '.'
+                  }
                 });
                 console.log('Created sign-off check: ' + newCheck);
               } else {
