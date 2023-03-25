@@ -72,31 +72,14 @@ jobs:
               const headSha = issuePr.data.head.sha;
               if (context.payload.action == "deleted") {
                 console.log('Sign-off comment deleted. Re-requesting check run.');
-                const checkRunsForPr = await github.rest.checks.listForRef({
+                const recreatedCheck = await github.rest.checks.create({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  ref: headSha,
-                  check_name: signOffCheckName,
+                  name: signOffCheckName,
+                  head_sha: headSha,
+                  status: 'queued',
                 });
-                if (checkRunsForPr.data.total_count > 0) {
-                  console.log('Found ' + checkRunsForPr.data.total_count + ' check run(s) for "' + signOffCheckName + '".');
-                  //const signOffCheckRunId = checkRunsForPr.data.check_runs[0].id;
-                  //const reRequestRunResult = await github.rest.checks.rerequestRun({
-                  //  owner: context.repo.owner,
-                  //  repo: context.repo.repo,
-                  //  check_run_id: signOffCheckRunId,
-                  //});
-                  //return reRequestRunResult;
-                  const signOffCheckSuiteId = checkRunsForPr.data.check_runs[0].check_suite.id;
-                  const reRequestSuiteResult = await github.rest.checks.rerequestSuite({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    check_suite_id: signOffCheckSuiteId,
-                  });
-                  return reRequestSuiteResult;
-                } else {
-                  console.log('No completed check runs found for "' + signOffCheckName + '". No action taken.');
-                }
+                console.log('Recreated sign-off check: ' + recreatedCheck);
               } else if (context.payload.action == "created") {
                 console.log('Got the right message from the right user!');
                 const newCheck = await github.rest.checks.create({
