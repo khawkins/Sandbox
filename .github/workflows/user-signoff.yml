@@ -89,6 +89,10 @@ jobs:
                   head_sha: headSha,
                   status: 'completed',
                   conclusion: 'success',
+                  output: {
+                    title: 'Successful user signoff',
+                    summary: 'User sign-off completed by ' + context.actor + '.'
+                  }
                 });
                 console.log('Created sign-off check: ' + newCheck);
               } else {
